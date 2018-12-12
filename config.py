@@ -217,7 +217,7 @@ class Config(object):
         if stage == 'finetune':
             self.MINI_MASK_SHAPE = (192, 192, 192)
             self.MASK_SHAPE = (192, 192, 192)
-            self.DETECTION_TARGET_IOU_THRESHOLD = 0.7
+            self.DETECTION_TARGET_IOU_THRESHOLD = 0.5
         else:
             self.MINI_MASK_SHAPE = (96, 96, 96)
             self.MASK_SHAPE = (96, 96, 96)
