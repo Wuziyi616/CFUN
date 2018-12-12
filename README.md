@@ -4,7 +4,7 @@ This is a Pytorch implementation of CFUN for whole heart segmentation. And it's 
 Due to Faster R-CNN's precise positioning ability and U-net's powerful segmentation ability, our elaborately designed pipeline which combines them together needs only one-step detection and segmentation inference to get the whole heart segmentation result, achieving excellent performances both in speed and precision. Besides, we adopt and design a new loss function based on edge information named 3D Edge_loss to accelerate the convergence and get a better segment result.
 
 ## Architecture
-![Failed to load the image]()
+![Failed to load the image](https://github.com/Wuziyi616/CFUN/blob/master/architecture.png)
 
 ## Prerequisites
 - Python 2.7+ or 3.5+
@@ -42,7 +42,7 @@ Our method reaps an average of 85.9% Dice score on the test set. And it takes on
   
 One prediction of our model can be seen as follows:
 ### Example
-![Failed to load the image]()
+![Failed to load the image](https://github.com/Wuziyi616/CFUN/blob/master/result.jpg)
 visualization of some test results. From top to bottom, the four CT images are 1007, 1009 and 1019, respectively.  
 (a) shows the original CT images, (b) shows ground truth and (c) shows the test result.
 
