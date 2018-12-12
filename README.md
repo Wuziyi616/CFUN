@@ -1,7 +1,7 @@
 # CFUN
-This is a Pytorch implementation of CFUN for whole heart segmentation. And it's also the source code for [CFUN: Combing Faster R-CNN and U-net for Efficient Whole Heart Segmentation]().  
+This is a Pytorch implementation of CFUN for whole heart segmentation. And it's also the source code for [CFUN: Combining Faster R-CNN and U-net Network for Efficient Whole Heart Segmentation]().  
   
-Due to Faster R-CNN's precise positioning ability and U-net's powerful segmentation ability, our elaborately designed pipeline combining these two nets together needs only one-time detection and segmentation inference to get the whole heart segmentation result, obtaining good results both in speed and precision. Besides, we adopt and design a new loss function based on edge information named 3D Edgeloss to accelerate the convergence and get a better segment result.
+Due to Faster R-CNN's precise positioning ability and U-net's powerful segmentation ability, our elaborately designed pipeline which combines them together needs only one-step detection and segmentation inference to get the whole heart segmentation result, achieving excellent performances both in speed and precision. Besides, we adopt and design a new loss function based on edge information named 3D Edge_loss to accelerate the convergence and get a better segment result.
 
 ## Architecture
 ![Failed to load the image]()
@@ -38,7 +38,7 @@ In the default code, testing images are also images with groung-truth so IoUs ar
 If you want to test the model on non-label images, then you can modify the code in heart_main.py.  
 
 ## Results
-Our method reaps an average of 87.2% Dice score on the test set. And it takes only less than 15 seconds to generate a segment result.  
+Our method reaps an average of 85.9% Dice score on the test set. And it takes only less than 15 seconds to generate a segment result.  
   
 One prediction of our model can be seen as follows:
 ### Example
