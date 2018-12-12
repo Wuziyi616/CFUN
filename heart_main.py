@@ -1,5 +1,5 @@
 """
-Faster U-net
+CFUN
 
 Main configurations, train and test functions for the MM-WHS2017 Challenge dataset.
 
@@ -11,14 +11,12 @@ import json
 import time
 import numpy as np
 import nibabel as nib
-from imgaug import augmenters as iaa
 
 from config import Config
 import model
 import utils
 import warnings
 warnings.filterwarnings('ignore')
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 ############################################################
 #  Configurations

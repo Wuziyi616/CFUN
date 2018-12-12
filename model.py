@@ -1,7 +1,7 @@
 """
-Faster U-net
+CFUN
 
-The main Faster U-net model implementation.
+The main CFUN model implementation.
 """
 
 import time
@@ -16,7 +16,6 @@ import torch.nn.functional as F
 import torch.optim as optim
 import torch.utils.data
 from torch.autograd import Variable
-from skimage.transform import resize
 import utils
 import backbone
 import mask_branch
@@ -986,10 +985,8 @@ def compute_losses(rpn_match, rpn_bbox, rpn_class_logits, rpn_pred_bbox, target_
                                                 mrcnn_class_logits)
     mrcnn_bbox_loss = compute_mrcnn_bbox_loss(target_deltas,
                                               torch.from_numpy(np.where(target_class_ids > 0, 1, 0)).cuda(), mrcnn_bbox)
-    if stage == 'beginning':
-        mrcnn_mask_loss = Variable(torch.FloatTensor([0]), requires_grad=False).cuda()
-    else:
-        mrcnn_mask_loss = compute_mrcnn_mask_loss(target_mask, target_class_ids, mrcnn_mask_logits)
+
+    mrcnn_mask_loss = compute_mrcnn_mask_loss(target_mask, target_class_ids, mrcnn_mask_logits)
     if stage == 'finetune':
         mrcnn_mask_edge_loss = compute_mrcnn_mask_edge_loss(target_mask, target_class_ids, mrcnn_mask)
     else:
@@ -1505,11 +1502,7 @@ class MaskRCNN(nn.Module):
                 mrcnn_class_logits, mrcnn_class, mrcnn_bbox = self.classifier(mrcnn_classifier_feature_maps, rois)
 
                 # Create masks for detections
-                if self.config.STAGE == 'beginning':
-                    mrcnn_mask = Variable(torch.FloatTensor()).cuda()
-                    mrcnn_mask_logits = Variable(torch.FloatTensor()).cuda()
-                else:
-                    mrcnn_mask_logits, mrcnn_mask = self.mask(mrcnn_mask_feature_maps, p_rois)
+                mrcnn_mask_logits, mrcnn_mask = self.mask(mrcnn_mask_feature_maps, p_rois)
 
             return [rpn_class_logits, rpn_bbox,
                     target_class_ids, mrcnn_class_logits,

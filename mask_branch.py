@@ -1,15 +1,19 @@
+"""
+CFUN
+
+Implementation of a modified U-net as our mrcnn_mask for segmentation.
+"""
+
 import torch.nn as nn
 import torch
-import torch.nn.functional as F
 
 
 class Modified3DUNet(nn.Module):
-    def __init__(self, in_channels, n_classes, stage, base_n_filter=32, shape=[96, 96, 96]):
+    def __init__(self, in_channels, n_classes, stage, base_n_filter=32):
         super(Modified3DUNet, self).__init__()
         self.in_channels = in_channels
         self.n_classes = n_classes
         self.base_n_filter = base_n_filter
-        self.shape = shape
         self.stage = stage
         self.lrelu = nn.LeakyReLU()
         self.dropout3d = nn.Dropout3d(p=0.6)
@@ -119,7 +123,6 @@ class Modified3DUNet(nn.Module):
 
     def forward(self, x):
         #  Level 1 context pathway
-        x = F.interpolate(x, self.shape)
         out = self.conv3d_c1_1(x)
         residual_1 = out
         out = self.lrelu(out)

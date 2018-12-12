@@ -1,7 +1,7 @@
 """
-Faster U-net
+CFUN
 
-Base Configurations class
+Base Configurations class.
 
 """
 

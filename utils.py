@@ -1,15 +1,11 @@
 """
-Faster U-net
+CFUN
 
-Common utility functions and classes
+Common utility functions and classes.
 """
 
 import torch
-import random
-import warnings
 import numpy as np
-import scipy.misc
-import scipy.ndimage
 import nibabel as nib
 import skimage.transform
 from distutils.version import LooseVersion

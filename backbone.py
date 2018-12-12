@@ -1,5 +1,5 @@
 """
-Faster U-net
+CFUN
 
 Backbone nets architectures: Pseudo-3D Residual Networks (P3D Resnet, 2017)
 
