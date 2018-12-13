@@ -1,5 +1,5 @@
 # CFUN
-This is a Pytorch implementation of CFUN for whole heart segmentation. And it's also the source code for [CFUN: Combining Faster R-CNN and U-net Network for Efficient Whole Heart Segmentation]().  
+This is a Pytorch implementation of CFUN for whole heart segmentation. And it's also the source code for [CFUN: Combining Faster R-CNN and U-net Network for Efficient Whole Heart Segmentation](https://arxiv.org/pdf/1812.04914.pdf).  
   
 Due to Faster R-CNN's precise positioning ability and U-net's powerful segmentation ability, our elaborately designed pipeline which combines them together needs only one-step detection and segmentation inference to get the whole heart segmentation result, achieving excellent performances both in speed and precision. Besides, we adopt and design a new loss function based on edge information named 3D Edge_loss to accelerate the convergence and get a better segment result.
 
