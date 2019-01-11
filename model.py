@@ -966,6 +966,10 @@ def compute_mrcnn_mask_edge_loss(target_masks, target_class_ids, pred_masks):
             for j in range(7):
                 y_true_final = F.conv3d(y_true_[j, :, :, :].unsqueeze(0).unsqueeze(0).cuda().float(), kernel)
                 y_pred_final = F.conv3d(y_pred_[:, j, :, :, :].unsqueeze(1), kernel)
+                y_true_final  = torch.sqrt(torch.pow(y_true_final[:, 0], 2) + torch.pow(y_true_final[:, 1], 2) + 
+                                           torch.pow(y_true_final[:, 0], 2))
+                y_pred_final = torch.sqrt(torch.pow(y_pred_final [:, 0], 2) + torch.pow(y_pred_final [:, 1], 2) + 
+                                          torch.pow(y_pred_final [:, 0], 2))
                 # Mean Square Error
                 loss += loss_fn(y_pred_final, y_true_final)
         loss /= indices.size()[0]
