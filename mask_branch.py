@@ -10,6 +10,16 @@ import torch
 
 class Modified3DUNet(nn.Module):
     def __init__(self, in_channels, n_classes, stage, base_n_filter=32):
+        """
+        Initialize the convolution layer.
+
+        Args:
+            self: (todo): write your description
+            in_channels: (int): write your description
+            n_classes: (todo): write your description
+            stage: (str): write your description
+            base_n_filter: (str): write your description
+        """
         super(Modified3DUNet, self).__init__()
         self.in_channels = in_channels
         self.n_classes = n_classes
@@ -89,23 +99,55 @@ class Modified3DUNet(nn.Module):
         self.out_upscale_conv = self.upscale_conv(self.n_classes, self.n_classes)
 
     def conv_norm_lrelu(self, feat_in, feat_out):
+        """
+        Conv_norm layer.
+
+        Args:
+            self: (todo): write your description
+            feat_in: (todo): write your description
+            feat_out: (todo): write your description
+        """
         return nn.Sequential(
             nn.Conv3d(feat_in, feat_out, kernel_size=3, stride=1, padding=1, bias=False),
             nn.InstanceNorm3d(feat_out),
             nn.LeakyReLU())
 
     def norm_lrelu_conv(self, feat_in, feat_out):
+        """
+        Lrelu norm.
+
+        Args:
+            self: (todo): write your description
+            feat_in: (todo): write your description
+            feat_out: (todo): write your description
+        """
         return nn.Sequential(
             nn.InstanceNorm3d(feat_in),
             nn.LeakyReLU(),
             nn.Conv3d(feat_in, feat_out, kernel_size=3, stride=1, padding=1, bias=False))
 
     def lrelu_conv(self, feat_in, feat_out):
+        """
+        Lrelu layer.
+
+        Args:
+            self: (todo): write your description
+            feat_in: (todo): write your description
+            feat_out: (todo): write your description
+        """
         return nn.Sequential(
             nn.LeakyReLU(),
             nn.Conv3d(feat_in, feat_out, kernel_size=3, stride=1, padding=1, bias=False))
 
     def norm_lrelu_upscale_conv_norm_lrelu(self, feat_in, feat_out):
+        """
+        Euclidean norm.
+
+        Args:
+            self: (todo): write your description
+            feat_in: (todo): write your description
+            feat_out: (todo): write your description
+        """
         return nn.Sequential(
             nn.InstanceNorm3d(feat_in),
             nn.LeakyReLU(),
@@ -116,12 +158,27 @@ class Modified3DUNet(nn.Module):
             nn.LeakyReLU())
 
     def upscale_conv(self, feat_in, feat_out):
+        """
+        3d convolution layer.
+
+        Args:
+            self: (todo): write your description
+            feat_in: (todo): write your description
+            feat_out: (todo): write your description
+        """
         return nn.Sequential(
             nn.Upsample(scale_factor=2, mode='nearest'),
             # should be feat_in*2 or feat_in
             nn.Conv3d(feat_in, feat_out, kernel_size=5, stride=1, padding=2, bias=False))
 
     def forward(self, x):
+        """
+        Implement forward computation.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         #  Level 1 context pathway
         out = self.conv3d_c1_1(x)
         residual_1 = out

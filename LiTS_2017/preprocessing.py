@@ -8,6 +8,12 @@ DATA_DIR = "../"
 
 
 def get_spacing(image):
+    """
+    Get a 2d array of pixels
+
+    Args:
+        image: (array): write your description
+    """
     affine = image.affine
 
     return np.abs(np.array([affine[0, 0], affine[1, 1], affine[2, 2]]))

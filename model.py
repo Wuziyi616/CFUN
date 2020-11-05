@@ -63,6 +63,12 @@ def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, lengt
 ############################################################
 
 def unique1d(tensor):
+    """
+    Return unique elements of a tensor.
+
+    Args:
+        tensor: (todo): write your description
+    """
     if tensor.size()[0] == 0 or tensor.size()[0] == 1:
         return tensor
     tensor = tensor.sort()[0]
@@ -75,6 +81,13 @@ def unique1d(tensor):
 
 
 def intersect1d(tensor1, tensor2):
+    """
+    Intersect two tensors.
+
+    Args:
+        tensor1: (todo): write your description
+        tensor2: (todo): write your description
+    """
     aux = torch.cat((tensor1, tensor2), dim=0)
     aux = aux.sort()[0]
     return aux[:-1][(aux[1:] == aux[:-1]).detach()]
@@ -111,11 +124,27 @@ class TopDownLayer(nn.Module):
     and c0_out is used for mrcnn mask branch.
     """
     def __init__(self, in_channels, out_channels):
+        """
+        Initialize the convolution layer.
+
+        Args:
+            self: (todo): write your description
+            in_channels: (int): write your description
+            out_channels: (int): write your description
+        """
         super(TopDownLayer, self).__init__()
         self.conv1 = nn.Conv3d(in_channels, out_channels, kernel_size=1, stride=1)
         self.conv2 = nn.Conv3d(out_channels, out_channels, kernel_size=3, stride=1, padding=1)
 
     def forward(self, x, y):
+        """
+        Interpolation of x y
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+            y: (todo): write your description
+        """
         y = F.interpolate(y, scale_factor=2)
         x = self.conv1(x)
         return self.conv2(x + y)
@@ -123,6 +152,17 @@ class TopDownLayer(nn.Module):
 
 class FPN(nn.Module):
     def __init__(self, C1, C2, C3, out_channels, config):
+        """
+        Initialize the convolution layer.
+
+        Args:
+            self: (todo): write your description
+            C1: (float): write your description
+            C2: (int): write your description
+            C3: (int): write your description
+            out_channels: (int): write your description
+            config: (todo): write your description
+        """
         super(FPN, self).__init__()
         self.out_channels = out_channels
         self.C1 = C1
@@ -134,6 +174,13 @@ class FPN(nn.Module):
         self.P2_conv2 = nn.Conv3d(self.out_channels, self.out_channels, kernel_size=3, stride=1, padding=1)
 
     def forward(self, x):
+        """
+        Evaluates the forward.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         x = self.C1(x)
         x = self.C2(x)
         c2_out = x
@@ -709,6 +756,16 @@ class RPN(nn.Module):
     """
 
     def __init__(self, anchors_per_location, anchor_stride, channel, conv_channel):
+        """
+        Initialize the convolution layer.
+
+        Args:
+            self: (todo): write your description
+            anchors_per_location: (todo): write your description
+            anchor_stride: (int): write your description
+            channel: (todo): write your description
+            conv_channel: (todo): write your description
+        """
         super(RPN, self).__init__()
         self.conv_shared = nn.Conv3d(channel, conv_channel, kernel_size=3, stride=anchor_stride, padding=1)
         self.relu = nn.ReLU(inplace=True)
@@ -717,6 +774,13 @@ class RPN(nn.Module):
         self.conv_bbox = nn.Conv3d(conv_channel, 6 * anchors_per_location, kernel_size=1, stride=1)
 
     def forward(self, x):
+        """
+        Perform forward computation.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         # Shared convolutional base of the RPN
         x = self.relu(self.conv_shared(x))
 
@@ -749,6 +813,18 @@ class RPN(nn.Module):
 
 class Classifier(nn.Module):
     def __init__(self, channel, pool_size, image_shape, num_classes, fc_size, test_flag=False):
+        """
+        Initialize a batch
+
+        Args:
+            self: (todo): write your description
+            channel: (todo): write your description
+            pool_size: (int): write your description
+            image_shape: (str): write your description
+            num_classes: (int): write your description
+            fc_size: (int): write your description
+            test_flag: (todo): write your description
+        """
         super(Classifier, self).__init__()
         self.pool_size = pool_size
         self.image_shape = image_shape
@@ -766,6 +842,14 @@ class Classifier(nn.Module):
         self.linear_bbox = nn.Linear(fc_size, num_classes * 6)
 
     def forward(self, x, rois):
+        """
+        Forward - off of a - shot.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+            rois: (todo): write your description
+        """
         x = pyramid_roi_align([rois] + x, self.pool_size, self.test_flag)
         x = self.conv1(x)
         x = self.bn1(x)
@@ -786,6 +870,18 @@ class Classifier(nn.Module):
 
 class Mask(nn.Module):
     def __init__(self, channel, pool_size, num_classes, conv_channel, stage, test_flag=False):
+        """
+        Initialize channel
+
+        Args:
+            self: (todo): write your description
+            channel: (todo): write your description
+            pool_size: (int): write your description
+            num_classes: (int): write your description
+            conv_channel: (todo): write your description
+            stage: (str): write your description
+            test_flag: (todo): write your description
+        """
         super(Mask, self).__init__()
         self.pool_size = pool_size
         self.test_flag = test_flag
@@ -794,6 +890,14 @@ class Mask(nn.Module):
         self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x, rois):
+        """
+        Perform function.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+            rois: (todo): write your description
+        """
         x = pyramid_roi_align([rois] + x, self.pool_size, self.test_flag)
         x = self.modified_u_net(x)
         output = self.softmax(x)
@@ -983,6 +1087,23 @@ def compute_mrcnn_mask_edge_loss(target_masks, target_class_ids, pred_masks):
 
 def compute_losses(rpn_match, rpn_bbox, rpn_class_logits, rpn_pred_bbox, target_class_ids, mrcnn_class_logits,
                    target_deltas, mrcnn_bbox, target_mask, mrcnn_mask, mrcnn_mask_logits, stage):
+    """
+    Compute rpn loss.
+
+    Args:
+        rpn_match: (todo): write your description
+        rpn_bbox: (todo): write your description
+        rpn_class_logits: (todo): write your description
+        rpn_pred_bbox: (todo): write your description
+        target_class_ids: (str): write your description
+        mrcnn_class_logits: (todo): write your description
+        target_deltas: (todo): write your description
+        mrcnn_bbox: (todo): write your description
+        target_mask: (todo): write your description
+        mrcnn_mask: (int): write your description
+        mrcnn_mask_logits: (todo): write your description
+        stage: (str): write your description
+    """
 
     rpn_class_loss = compute_rpn_class_loss(rpn_match, rpn_class_logits)
     rpn_bbox_loss = compute_rpn_bbox_loss(rpn_bbox, rpn_match, rpn_pred_bbox)
@@ -1209,6 +1330,13 @@ class Dataset(torch.utils.data.Dataset):
         self.config = config
 
     def __getitem__(self, image_index):
+        """
+        Return an array of the dataset.
+
+        Args:
+            self: (todo): write your description
+            image_index: (int): write your description
+        """
         image_id = self.image_ids[image_index]
         # Load image, which is [H, W, D, C] first.
         image = self.dataset.load_image(image_id)
@@ -1235,6 +1363,12 @@ class Dataset(torch.utils.data.Dataset):
         return image, image_meta, mask
 
     def __len__(self):
+        """
+        Return the length of the image.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.image_ids.shape[0]
 
 
@@ -1295,6 +1429,12 @@ class MaskRCNN(nn.Module):
 
         # Fix batch norm layers
         def set_bn_fix(m):
+            """
+            Sets the gradient of a class.
+
+            Args:
+                m: (todo): write your description
+            """
             classname = m.__class__.__name__
             if classname.find('BatchNorm') != -1:
                 for p in m.parameters():
@@ -1389,6 +1529,14 @@ class MaskRCNN(nn.Module):
         return results
 
     def predict(self, inputs, mode):
+        """
+        Predict classifier on input mode.
+
+        Args:
+            self: (todo): write your description
+            inputs: (array): write your description
+            mode: (todo): write your description
+        """
         molded_images = inputs[0]
         image_metas = inputs[1]
 
@@ -1399,6 +1547,12 @@ class MaskRCNN(nn.Module):
 
             # Set batchnorm always in eval mode during training
             def set_bn_eval(m):
+                """
+                Sets the __init__ function.
+
+                Args:
+                    m: (todo): write your description
+                """
                 classname = m.__class__.__name__
                 if classname.find('BatchNorm') != -1:
                     m.eval()
@@ -1572,6 +1726,17 @@ class MaskRCNN(nn.Module):
         self.epoch = epochs
 
     def train_epoch(self, datagenerator, optimizer, steps, angle, dataset):
+        """
+        Train an epoch.
+
+        Args:
+            self: (todo): write your description
+            datagenerator: (todo): write your description
+            optimizer: (todo): write your description
+            steps: (int): write your description
+            angle: (float): write your description
+            dataset: (todo): write your description
+        """
         batch_count = 0
         loss_sum = 0
         loss_rpn_class_sum = 0
@@ -1676,6 +1841,16 @@ class MaskRCNN(nn.Module):
             loss_mrcnn_class_sum, loss_mrcnn_bbox_sum, loss_mrcnn_mask_sum, loss_mrcnn_mask_edge_sum
 
     def valid_epoch(self, datagenerator, steps, angle, dataset):
+        """
+        Check that the image validation.
+
+        Args:
+            self: (todo): write your description
+            datagenerator: (todo): write your description
+            steps: (int): write your description
+            angle: (str): write your description
+            dataset: (todo): write your description
+        """
 
         step = 0
         loss_sum = 0

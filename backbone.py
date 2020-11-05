@@ -56,6 +56,13 @@ class Bottleneck(nn.Module):
         self.relu = nn.ReLU(inplace=True)
 
     def ST_A(self, x):
+        """
+        Compute the convex ( x and b.
+
+        Args:
+            self: (todo): write your description
+            x: (array): write your description
+        """
         x = self.conv2(x)
         x = self.bn2(x)
         x = self.relu(x)
@@ -67,6 +74,13 @@ class Bottleneck(nn.Module):
         return x
 
     def ST_B(self, x):
+        """
+        B = x * x ).
+
+        Args:
+            self: (todo): write your description
+            x: (array): write your description
+        """
         tmp_x = self.conv2(x)
         tmp_x = self.bn2(tmp_x)
         tmp_x = self.relu(tmp_x)
@@ -78,6 +92,13 @@ class Bottleneck(nn.Module):
         return x + tmp_x
 
     def ST_C(self, x):
+        """
+        Evaluate the c ( x ).
+
+        Args:
+            self: (todo): write your description
+            x: (array): write your description
+        """
         x = self.conv2(x)
         x = self.bn2(x)
         x = self.relu(x)
@@ -89,6 +110,13 @@ class Bottleneck(nn.Module):
         return x + tmp_x
 
     def forward(self, x):
+        """
+        Implement forward computation.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         residual = x
 
         out = self.conv1(x)
@@ -117,6 +145,16 @@ class Bottleneck(nn.Module):
 class P3D(nn.Module):
 
     def __init__(self, block, layers, input_channel=1, config=None):
+        """
+        Initialize the network.
+
+        Args:
+            self: (todo): write your description
+            block: (todo): write your description
+            layers: (list): write your description
+            input_channel: (todo): write your description
+            config: (todo): write your description
+        """
         super(P3D, self).__init__()
         self.inplanes = config.BACKBONE_CHANNELS[0]
 
@@ -139,6 +177,16 @@ class P3D(nn.Module):
                 m.bias.data.zero_()
 
     def _make_layer(self, block, planes, blocks, stride=1):
+        """
+        Make a layer.
+
+        Args:
+            self: (todo): write your description
+            block: (todo): write your description
+            planes: (todo): write your description
+            blocks: (todo): write your description
+            stride: (int): write your description
+        """
         layers = []
         layers.append(block(self.inplanes, planes, 1, True, stride))
         self.inplanes = planes * block.expansion
@@ -148,6 +196,13 @@ class P3D(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
+        """
+        Returns the forward.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         x = self.C1(x)
         x = self.C2(x)
         x = self.C3(x)
@@ -155,6 +210,12 @@ class P3D(nn.Module):
         return x
 
     def stages(self):
+        """
+        : returns : class : c1. c2. c2. c2.
+
+        Args:
+            self: (todo): write your description
+        """
         return [self.C1, self.C2, self.C3]
 
 

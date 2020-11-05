@@ -195,6 +195,13 @@ class Dataset(object):
     """
 
     def __init__(self, class_map=None):
+        """
+        Initialize the class_class
+
+        Args:
+            self: (todo): write your description
+            class_map: (todo): write your description
+        """
         self._image_ids = []
         self.image_info = []
         # Background is always the first class
@@ -202,6 +209,15 @@ class Dataset(object):
         self.source_class_ids = {}
 
     def add_class(self, source, class_id, class_name):
+        """
+        Add a class to the class.
+
+        Args:
+            self: (todo): write your description
+            source: (str): write your description
+            class_id: (str): write your description
+            class_name: (str): write your description
+        """
         assert "." not in source, "Source name cannot contain a dot"
         # Does the class exist already?
         for info in self.class_info:
@@ -216,6 +232,15 @@ class Dataset(object):
         })
 
     def add_image(self, source, image_id, path, **kwargs):
+        """
+        Add an image
+
+        Args:
+            self: (todo): write your description
+            source: (str): write your description
+            image_id: (str): write your description
+            path: (str): write your description
+        """
         image_info = {
             "id": image_id,
             "source": source,
@@ -280,6 +305,14 @@ class Dataset(object):
         return info['id']
 
     def append_data(self, class_info, image_info):
+        """
+        Append image data to the image.
+
+        Args:
+            self: (todo): write your description
+            class_info: (todo): write your description
+            image_info: (todo): write your description
+        """
         self.external_to_class_id = {}
         for i, c in enumerate(self.class_info):
             for ds, id in c["map"]:
@@ -292,6 +325,12 @@ class Dataset(object):
 
     @property
     def image_ids(self):
+        """
+        : return : a list of the ids
+
+        Args:
+            self: (todo): write your description
+        """
         return self._image_ids
 
     def source_image_link(self, image_id):
