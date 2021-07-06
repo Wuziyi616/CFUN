@@ -83,12 +83,6 @@ Please cite our paper if you find it useful in your research:
 }
 ```
 
-## Authors
-Zhanwei Xu  
-xzw14@tsinghua.org.cn  
-Ziyi Wu  
-wuzy17@mails.tsinghua.edu.cn  
-Jianjiang Feng  
-jfeng@mail.tsinghua.edu.cn  
+## Contact
   
-If you have any questions about the code, please contact Ziyi Wu wuzy17@mails.tsinghua.edu.cn
+If you have any questions about the code, please contact Ziyi Wu (dazitu616@gmail.com)
