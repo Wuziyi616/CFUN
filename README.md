@@ -1,5 +1,5 @@
 # CFUN
-**We have stopped this project more than one year for some reasons (e.g. GPU memory limit, accuracy issue), so this repo has been deprecated as well. There will not be any update for this. Actually I've moved to another lab in my department last year so I'm not able to maintain the code any more. No pre-trained weights will be available in the future.**  
+**We have stopped this project more than one year for some reasons (e.g. GPU memory limit, accuracy issue), so this repo has been deprecated as well. There will not be any update for this. Actually I am no longer in this lab, so it is impossible for me to maintain the code any more. No pre-trained weights will be available in the future.**  
   
 **However, I'll still try my best to answer questions so don't mind opening issues about the code or data. Or you can directly email me questions because I sometimes may not look at this repo. Some frequently asked questions are presented in README.**  
   
